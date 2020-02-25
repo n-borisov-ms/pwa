@@ -1,18 +1,33 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="page">
+    <div class="logo">
+      <img src="../assets/img/logo.png" alt="" />
+    </div>
+    <add-form @submit="addNewItem" />
+    <ul>
+      <li v-for="(item, index) in list" :key="index">
+        {{ item }}
+        <button class="trash" @click="moveToTrash({item, index})">in trash</button>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import { mapState, mapActions } from 'vuex';
+import AddForm from '../components/AddForm';
 
 export default {
-  name: 'Home',
   components: {
-    HelloWorld,
+    AddForm,
+  },
+
+  computed: {
+    ...mapState(['list']),
+  },
+
+  methods: {
+    ...mapActions(['addNewItem', 'moveToTrash']),
   },
 };
 </script>
