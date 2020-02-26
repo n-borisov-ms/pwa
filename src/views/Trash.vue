@@ -4,24 +4,31 @@
       <img src="../assets/img/logo.png" alt="" />
     </div>
     <ul>
-      <li v-for="(item, index) in trash" :key="index">
-        {{ item }}
-        <button class="restore" @click="moveToList({index, item})">restore</button>
+      <li v-for="item in trashItems" :key="item.id">
+        {{ item.id }}. {{ item.value }}
+        <div>
+          <button class="restore" @click="updateItem({ ...item, inTrash: false })">restore</button>
+          <button class="delete" @click="deleteItem(item)">delete</button>
+        </div>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapState(['trash']),
+    ...mapGetters(['trashItems']),
   },
 
   methods: {
-    ...mapActions(['moveToList']),
+    ...mapActions(['getItems', 'updateItem', 'deleteItem']),
+  },
+
+  mounted() {
+    this.getItems();
   },
 };
 </script>

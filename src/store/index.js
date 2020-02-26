@@ -1,40 +1,43 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import api from '@/api/db';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     list: [],
-    trash: [],
   },
   mutations: {
-    setItemToList(state, playload) {
-      state.list.push(playload);
-    },
-    setItemToTrash(state, playload) {
-      state.trash.push(playload);
-    },
-    deleteItemFromList(state, index) {
-      state.list.splice(index, 1);
-    },
-    deleteItemFromTrash(state, index) {
-      state.trash.splice(index, 1);
+    setItems(state, playload) {
+      state.list = playload;
     },
   },
   actions: {
-    addNewItem({ commit }, data) {
-      commit('setItemToList', data);
+    async getItems({ commit }) {
+      const data = await api.getItems();
+      commit('setItems', data);
     },
-    moveToList({ commit }, data) {
-      const { index, item } = data;
-      commit('deleteItemFromTrash', index);
-      commit('setItemToList', item);
+    async addItem({ dispatch }, data) {
+      await api.addItem(data);
+      dispatch('getItems');
     },
-    moveToTrash({ commit }, data) {
-      const { index, item } = data;
-      commit('deleteItemFromList', index);
-      commit('setItemToTrash', item);
+    async updateItem({ dispatch }, data) {
+      await api.updateItem(data);
+      dispatch('getItems');
+    },
+    async deleteItem({ dispatch }, data) {
+      await api.deleteItem(data);
+      dispatch('getItems');
+    },
+  },
+  getters: {
+    activeItems(state) {
+      return state.list.filter((item) => item.inTrash === false).reverse();
+    },
+    trashItems(state) {
+      return state.list.filter((item) => item.inTrash === true).reverse();
     },
   },
 });

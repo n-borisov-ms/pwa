@@ -3,18 +3,18 @@
     <div class="logo">
       <img src="../assets/img/logo.png" alt="" />
     </div>
-    <add-form @submit="addNewItem" />
+    <add-form @submit="addItem({value: $event, inTrash: false})" />
     <ul>
-      <li v-for="(item, index) in list" :key="index">
-        {{ item }}
-        <button class="trash" @click="moveToTrash({item, index})">in trash</button>
+      <li v-for="item in activeItems" :key="item.id">
+        {{ item.id }}. {{ item.value }}
+        <button class="trash" @click="updateItem({ ...item, inTrash: true })">in trash</button>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import AddForm from '../components/AddForm';
 
 export default {
@@ -23,11 +23,15 @@ export default {
   },
 
   computed: {
-    ...mapState(['list']),
+    ...mapGetters(['activeItems']),
   },
 
   methods: {
-    ...mapActions(['addNewItem', 'moveToTrash']),
+    ...mapActions(['getItems', 'addItem', 'updateItem']),
+  },
+
+  mounted() {
+    this.getItems();
   },
 };
 </script>
