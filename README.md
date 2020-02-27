@@ -20,5 +20,10 @@ yarn build
 yarn lint
 ```
 
+### Localhost from dist folder
+```
+yarn urn gulp
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
