@@ -22,7 +22,7 @@ yarn lint
 
 ### Localhost from dist folder
 ```
-yarn urn gulp
+yarn run gulp
 ```
 
 ### Customize configuration
