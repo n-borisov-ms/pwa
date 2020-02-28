@@ -3,10 +3,20 @@
     <div class="logo">
       <img src="../assets/img/logo.png" alt="" />
     </div>
-    <add-form @submit="addItem({value: $event, inTrash: false})" />
+    <div class="nav-bar">
+      <button class="nav-bar__add" @click="addItem({ inTrash: false })">add single</button>
+      <button
+        class="nav-bar__add"
+        :class="{ 'is-loading': !isLoaded }"
+        :disabled="!isLoaded"
+        @click="addMultiple"
+      >
+        add with worker
+      </button>
+    </div>
     <ul>
       <li v-for="item in activeItems" :key="item.id">
-        {{ item.id }}. {{ item.value }}
+        {{ item.id }}
         <button class="trash" @click="updateItem({ ...item, inTrash: true })">in trash</button>
       </li>
     </ul>
@@ -15,11 +25,15 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import AddForm from '../components/AddForm';
+
+import myWorker from '@/workers';
 
 export default {
-  components: {
-    AddForm,
+  data() {
+    return {
+      isLoaded: true,
+      myWorker: null,
+    };
   },
 
   computed: {
@@ -28,6 +42,15 @@ export default {
 
   methods: {
     ...mapActions(['getItems', 'addItem', 'updateItem']),
+
+    addMultiple() {
+      this.isLoaded = false;
+      myWorker.send({ inTrash: false })
+        .then((reply) => {
+          this.isLoaded = true;
+          this.addItem(reply);
+        });
+    },
   },
 
   mounted() {

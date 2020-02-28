@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable */
 const manifestJSON = require('./public/manifest.json');
 
 module.exports = {
@@ -13,4 +13,9 @@ module.exports = {
       swSrc: './src/service-worker.js',
     },
   },
+  chainWebpack: config => {
+    if (process.env.NODE_ENV === 'development') {
+      config.output.globalObject('this');
+    }
+  }
 };

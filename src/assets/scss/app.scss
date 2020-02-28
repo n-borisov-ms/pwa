@@ -28,6 +28,10 @@ li {
   margin-bottom: 10px;
 }
 
+.logo {
+  text-align: center;
+}
+
 button {
   background: none;
   padding: 0 10px;
@@ -36,6 +40,14 @@ button {
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &[disabled] {
+    cursor: auto;
   }
 }
 
@@ -51,6 +63,23 @@ button {
   color: blue;
 }
 
-.logo {
+.nav-bar {
+  margin-bottom: 20px;
   text-align: center;
+
+  &__add {
+    width: 150px;
+    height: 40px;
+    margin: 0 5px;
+    background: green;
+    color: #fff;
+    border-radius: 3px;
+    overflow: hidden;
+
+    &.is-loading {
+      background: #fff url('../img/loader.gif') center no-repeat;
+      background-size: 40px;
+      text-indent: -9999px;
+    }
+  }
 }

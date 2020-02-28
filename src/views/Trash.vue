@@ -5,7 +5,7 @@
     </div>
     <ul>
       <li v-for="item in trashItems" :key="item.id">
-        {{ item.id }}. {{ item.value }}
+        {{ item.id }}
         <div>
           <button class="restore" @click="updateItem({ ...item, inTrash: false })">restore</button>
           <button class="delete" @click="deleteItem(item)">delete</button>
